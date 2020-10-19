@@ -1,3 +1,4 @@
+import numpy as np
 
 def subsecuencia_suma (S,n):
     #n = len(S) # Tamaño secuencia
@@ -18,7 +19,13 @@ def subsecuencia_suma (S,n):
           subP[i][j] = subP[i][j-1]
           if i >= S[j-1]:
             subP[i][j] = (subP[i][j] or subP[i-S[j-1]][j - 1])
+      aux = np.array(subP)
+      print(aux)
+    
+    
     return subP[subK][n]
+
+
 
 def subsecuenciaSum(S):
   n = len(S)

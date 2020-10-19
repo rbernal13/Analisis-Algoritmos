@@ -1,3 +1,5 @@
+import numpy as np
+
 def mochilaF(peso, valor, pesoMaximo):
   filas= len(peso)+1
   columnas=pesoMaximo+1
@@ -11,6 +13,8 @@ def mochilaF(peso, valor, pesoMaximo):
         #mochila[i][j]=valor[i-1]+ mochila[i-1][j-peso[i-1]]
       else:
         mochila[i][j]= mochila[i-1][j]
+    aux = np.array(mochila)
+    print(aux)
   for i in mochila:
     for j in i:
       print(j,end =" ")
