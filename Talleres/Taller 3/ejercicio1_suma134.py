@@ -16,10 +16,12 @@ def sumarNumero(n):
     suma[0] = suma[1] = suma[2] = 1
     suma[3] = 2
     
+    print(suma)
     for i in range(4, n + 1): 
         suma[i] = suma[i - 1] + suma[i - 3] + suma[i - 4] 
+        print(suma)
       
     return suma[n] 
 
-
-print(sumarNumero(7))
+N = 7
+print("El numero es ",N, " y la cantidad de formas de expresalor como una suma de 1,3 y 4 son ",sumarNumero(N))
