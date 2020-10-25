@@ -1,36 +1,36 @@
-#fibonaci O(2^n)
-def fibonacci1(n):
-    return n if n < 2 else fibonacci1(n-1) + fibonacci1(n-2)
-print(fibonacci1(7))
+def fibonacci_recursivo(n):
+    return n if n < 2 else fibonacci1(n-1) + fibonacci1(n-2) # O(2^n)
 
-#fibonaci O(log n)
-def fibonacci2(n): 	
-	Q = [[1, 1], 
-		[1, 0]] 
-	if (n == 0): 
-		return 0
-	potencia(Q, n) 		
-	return Q[0][0] 
+def multiplicar_matriz(A, B): 
+	x = (A[0][0] * B[0][0] + A[0][1] * B[1][0]) 
+	y = (A[0][0] * B[0][1] + A[0][1] * B[1][1]) 
+	z = (A[1][0] * B[0][0] + A[1][1] * B[1][0]) 
+	w = (A[1][0] * B[0][1] + A[1][1] * B[1][1]) 
 	
-def multiplicar(Q, M): 
-	x = (Q[0][0] * M[0][0] + Q[0][1] * M[1][0]) 
-	y = (Q[0][0] * M[0][1] + Q[0][1] * M[1][1]) 
-	z = (Q[1][0] * M[0][0] + Q[1][1] * M[1][0]) 
-	w = (Q[1][0] * M[0][1] + Q[1][1] * M[1][1]) 
-	Q[0][0] = x 
-	Q[0][1] = y 
-	Q[1][0] = z 
-	Q[1][1] = w 
+	A[0][0] = x 
+	A[0][1] = y 
+	A[1][0] = z 
+	A[1][1] = w 
 			
-def potencia(Q, n): 
-	if( n == 0 or n == 1): 
-		return 
-	M = [[1, 1], 
-		[1, 0]] 
-	potencia(Q, n // 2)
-	multiplicar(Q, Q)
-	if (n % 2 != 0): 
-		multiplicar(Q, M)  
+def potencia_matriz(A, n): 
+	if(n <= 1): 
+		return A 
+	
+	B = [[1, 1], [1, 0]] 
+	
+	potencia_matriz(A, n // 2)
+	multiplicar_matriz(A, A)
 
+	if (n%2 != 0): 
+		multiplicar_matriz(A, B)  
 
-print(fibonacci2(7)) 
+def fibonacci_dp(n): 	
+	if (n <= 1): 
+		return n
+	
+	A = [[1, 1], [1, 0]] 
+	potencia_matriz(A, n-1) 		
+	
+	return A[0][0] 
+
+print(fibonacci_dp(9))

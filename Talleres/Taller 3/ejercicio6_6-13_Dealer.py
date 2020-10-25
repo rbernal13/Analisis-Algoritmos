@@ -1,19 +1,10 @@
+import numpy as np
 
-arr2 = [ 2, 2, 2, 2 ] 
-
-arr3 = [ 20, 30, 2, 2, 2,10 ,5] 
-
-#20 2 2 5
-
-#30 2 10
-
-arreglo= [ 8, 15, 3, 7 ]
 def cartas(arreglo):
     n=len(arreglo)
     matriz = [[0 for i in range(n)]for i in range(n)]
     for i in range(n):
         matriz[i][i]=arreglo[i]
-    cartasEscogidas=[]
     for corrimiento in range(1,n):
         i =0
         for j in range (corrimiento, n):
@@ -31,12 +22,19 @@ def cartas(arreglo):
                 f3 = matriz[i][j - 2] 
             matriz[i][j] = max(arreglo[i] + min(f1, f2),arreglo[j] + min(f2, f3))
             i+=1
-            for a in matriz:
-              for b in a:
-                  print(b,end =" ")
-              print()
+            aux = np.array(matriz)
+            print(aux)
             print("\n")
-    return matriz[0][n-1], cartasEscogidas
-print("el juego perfecto sumaría: ",cartas(arr3))
+    return matriz[0][n-1]
+
+#-----------------MAIN------------------#
+
+S1 = [10, 30, 5, 8]
+
+S2 = [20, 30, 2, 2, 2, 10] 
+
+S3 = [8, 15, 3, 7]
+
+print("Para la secuencia", S1 ,", la sumatoria de la secuencia optima de cartas mas altas para el primer jugador seria ",cartas(S1))
 
 
