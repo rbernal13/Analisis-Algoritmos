@@ -37,34 +37,32 @@ struct comparar
     }
 };
 
-class Pila { 
-    int top; 
+// class Pila { 
+//     int top; 
 
-    public: 
-        Pila(){
-             top = -1;
-        }
-        int a[max];
-        void push(int valr){
-            if(top>=max-1){
-                cout<<"Error, fuera del rango"<<endl;
-            }else{
-                top++;
-                a[top]=valr;
-            }
-        }
-        void pop(){
-            if(top<=-1){
-                cout<<"Error, fuera del rango"<<endl;
-            }else{
-                top--;
-            }
-        }
-        int top(){
-            
-        }  
-        bool isEmpty(); 
-};
+//     public: 
+//         Pila(){
+//              top = -1;
+//         }
+//         int a[max];
+//         void push(int valr){
+//             if(top>=max-1){
+//                 cout<<"Error, fuera del rango"<<endl;
+//             }else{
+//                 top++;
+//                 a[top]=valr;
+//             }
+//         }
+//         void pop(){
+//             if(top<=-1){
+//                 cout<<"Error, fuera del rango"<<endl;
+//             }else{
+//                 top--;
+//             }
+//         }
+//         int top(); 
+//         bool isEmpty(); 
+// };
 
 class Graph
 {
@@ -304,7 +302,7 @@ public:
 
 
 
-    void Resolver(int fila,vector<int>&col,list< vector<int> > &resultado)
+    void jugar(int fila,vector<int>&col,list< vector<int> > &resultado)
     {
         if(fila == 8)
         {
@@ -317,7 +315,7 @@ public:
                 col.push_back(i);
                 if(Validar(col))
                 {
-                    Resolver(fila+1,col,resultado);
+                    jugar(fila+1,col,resultado);
                 }
                 col.pop_back();
             }
@@ -340,21 +338,20 @@ public:
         return true;
     }
 
-    list< vector<int> > Reina()
+    list< vector<int> > reina()
     {
         list< vector<int> > resultado;
         vector<int>y;
-        Resolver(0,y,resultado);
+        jugar(0,y,resultado);
         return resultado;
     }
 
 
 
-    void AsignarLabores()
+    void ponerTrabajos()
     {
-
         priority_queue <pair<Vertice,Vertice>, vector< pair<Vertice,Vertice> >, less< pair<Vertice,Vertice> > > cola;
-        priority_queue <pair<Vertice,Vertice>, vector< pair<Vertice,Vertice> >, less< pair<Vertice,Vertice> > > aux;
+        priority_queue <pair<Vertice,Vertice>, vector< pair<Vertice,Vertice> >, less< pair<Vertice,Vertice> > > cola_aux;
         vector<int> Trabajadores((this->vertices.size())/2,0);
         vector<int> Labor((this->vertices.size())/2,0);
         for(int i = 0; i < Trabajadores.size(); i++)
@@ -374,27 +371,28 @@ public:
 
                 int valorL = Labor[j];
                 cont+= valorL*valorT;
-                aux.push(make_pair(this->vertices[(Trabajadores.size())-(j+1)],this->vertices[(Trabajadores.size())+(valorL-1)]));
+                cola_aux.push(make_pair(this->vertices[(Trabajadores.size())-(j+1)],this->vertices[(Trabajadores.size())+(valorL-1)]));
                 valorT--;
             }
 
             if(minimo < cont)
             {
                 minimo = cont;
-                cola = aux;
-                while(!aux.empty())
+                cola = cola_aux;
+                while(!cola_aux.empty())
                 {
-                    aux.pop();
+                    cola_aux.pop();
                 }
             }
             cont = 0;
         }
 
 
-        cout<<"Mejor asignacion con menor costo es (Trabajadores|Labores): "<<endl;
+        cout<<"La mejor asignacion seria: "<<endl;
 
         while(!cola.empty())
         {
+            cout<<"entro"<<endl;
             pair<Vertice,Vertice> l = cola.top();
             int d;
             int c;
@@ -408,10 +406,10 @@ public:
         vector< pair< long,pair<Vertice,Vertice> > > asignacion  = getAristas();
         for(int i = 0; i < asignacion.size(); i++ )
         {
-            cout<<"Arista: "<<asignacion[i].second.first.contenido<< " a  Arista : "<<asignacion[i].second.second.contenido<<endl;
-            cout<<"Longitud : "<<asignacion[i].first<<endl;
+            cout<<"De arista: "<<asignacion[i].second.first.contenido<< " hasta arista: "<<asignacion[i].second.second.contenido<<endl;
+            cout<<"Longitud: "<<asignacion[i].first<<endl;
         }
-        cout<<"El costo minimo fue de : "<<minimo<<endl;
+        cout<<"costo min: "<<minimo<<endl;
     }
 
 };

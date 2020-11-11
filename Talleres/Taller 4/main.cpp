@@ -9,6 +9,8 @@ void busquedaAnchura();
 void algoritmoDijkstra();
 void algoritmoBellmanFord();
 void algoritmoPrimm();
+void ejercicioLabores();
+void ejercicioDamas();
 
 int main()
 {
@@ -31,9 +33,81 @@ int main()
   //#Punto5
   cout<<"Algoritmo PrimmKruskal: "<<endl;
   //algoritmoPrimm();
+
+  //#Punto6
+  cout<<"Ejercicio - Asignación de labores ([Boh92], ejercicio 7.6): "<<endl;
+  //ejercicioLabores();
+
+  //#Punto7
+  cout<<"Ejercicio - Ubicar 4 damas en un tablero de ajedrez de 4x4 ([Boh92], sección 7.1): "<<endl;
+  //ejercicioDamas();
     
   return 0;
 
+}
+
+void ejercicioLabores(){
+  //Graph *grafo = new Grafo_Lista_Adyacencia();
+  Graph  *grafo = new Grafo_Matriz_Adyacencia();
+  //Graph *grafo = new Grafo_Lista_Aristas();
+
+  Vertice *v1 = new Vertice("1");
+  Vertice *v2 = new Vertice("2");
+  Vertice *v3 = new Vertice("3");
+  Vertice *v4 = new Vertice("4");
+  Vertice *v5 = new Vertice("5");
+  Vertice *v6 = new Vertice("6");
+  Vertice *v7 = new Vertice("7");
+  Vertice *v8 = new Vertice("8");
+  Vertice *v9 = new Vertice("9");
+
+  Vertice *b1 = new Vertice("1");
+  Vertice *b2 = new Vertice("2");
+  Vertice *b3 = new Vertice("3");
+  Vertice *b4 = new Vertice("4");
+  Vertice *b5 = new Vertice("5");
+  Vertice *b6 = new Vertice("6");
+  Vertice *b7 = new Vertice("7");
+  Vertice *b8 = new Vertice("8");
+  Vertice *b9 = new Vertice("9");
+
+  grafo->anadirVertice(v1);
+  grafo->anadirVertice(v2);
+  grafo->anadirVertice(v3);
+  grafo->anadirVertice(v4);
+  grafo->anadirVertice(v5);
+  grafo->anadirVertice(v6);
+  grafo->anadirVertice(v7);
+  grafo->anadirVertice(v8);
+  grafo->anadirVertice(v9);
+  grafo->anadirVertice(b1);
+  grafo->anadirVertice(b2);
+  grafo->anadirVertice(b3);
+  grafo->anadirVertice(b4);
+  grafo->anadirVertice(b5);
+  grafo->anadirVertice(b6);
+  grafo->anadirVertice(b7);
+  grafo->anadirVertice(b8);
+  grafo->anadirVertice(b9);
+
+  grafo->ponerTrabajos();
+}
+
+void ejercicioDamas(){
+  Graph *grafo = new Grafo_Matriz_Adyacencia();
+  list< vector<int> >pos1 = grafo->reina();
+  int j=1;
+  cout<<"formas: "<<pos1.size()<<endl;
+  for (vector<int> pos2:pos1)
+  {
+    cout<<"it "<<j<<" : ";
+    j++;
+    for(int i = 0;i < pos2.size();i++)
+    {
+      cout<<"   "<<pos2[i]<<"   ";
+    }
+    cout<<endl;
+  }
 }
 
 void busquedaProfundidad(){
@@ -90,9 +164,9 @@ void busquedaAnchura(){
   grafo->anadirArista(*v3,*v1, 30);
   grafo->anadirArista(*v4,*v4, 50);
 
-  map<int, int> x;
-  x = grafo->BFS(*v2);
-  for (std::map<int,int>::iterator it=x.begin(); it!=x.end(); ++it){
+  map<int, int> pos;
+  pos = grafo->BFS(*v2);
+  for (std::map<int,int>::iterator it=pos.begin(); it!=pos.end(); ++it){
     cout<<it->first<<"   ,   "<<it->second<<endl;
   }
 }
@@ -119,9 +193,9 @@ void algoritmoDijkstra(){
   grafo->anadirArista(*v3,*v1, 30);
   grafo->anadirArista(*v4,*v4, 50);
 
-  map<int, int> x;
-  x = grafo->Dijkstras(*v3);
-  for (std::map<int,int>::iterator it=x.begin(); it!=x.end(); ++it){
+  map<int, int> pos;
+  pos = grafo->Dijkstras(*v3);
+  for (std::map<int,int>::iterator it=pos.begin(); it!=pos.end(); ++it){
     cout<<it->first<<"   ,   "<<it->second<<endl;
   }
     
@@ -155,8 +229,8 @@ void algoritmoBellmanFord(){
   grafo->anadirArista(*v5,*v4, -3); //E-D
   grafo->anadirArista(*v4,*v4, 50);
   
-  map<int, long> x = grafo->BELLMAN_FORDS(*v1);
-  for (std::map<int,long>::iterator it=x.begin(); it!=x.end(); ++it){
+  map<int, long> pos = grafo->BELLMAN_FORDS(*v1);
+  for (std::map<int,long>::iterator it=pos.begin(); it!=pos.end(); ++it){
     cout<<it->first<<"  ,   "<<it->second<<endl;
   }
       

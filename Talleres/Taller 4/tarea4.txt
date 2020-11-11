@@ -1,0 +1,26 @@
+Tarea 4 - Algoritmos y aplicaciones sobre grafos
+Forma de trabajo: Individual o parejas
+
+Pasos:
+
+1. Construya la clase Vertice.  Deje campos para el contenido y otras cosas exigidas por los algoritmos.
+2. Construya la clase abstracta Grafo.  En esta clase deben aparecer los siguientes métodos:
+	- Vecinos de un vértice (abstracto).
+	- Costo de una arista (abstracto).
+	- Búsqueda en profundidad.
+	- Búsqueda en anchura.
+	- Dijkstra.
+	- Bellman-Ford
+	- Prim
+	- Kruskal
+Los métodos que no son abstractos deben ser agnósticos a la implementación particular del grafo.
+3. Construya las tres implementaciones del grafo en sendas clases que hereden de la clase Grafo del punto anterior.  Se deben construir:
+	- Grafo con matriz de adyacencias.
+	- Grafo con lista de vecinos de cada vértice.
+	- Grafo con lista de aristas.
+4. Construya soluciones a los siguientes problemas de aplicación.  La clase que resuelve cada problema debe heredar de alguna de las implementaciones del punto anterior:
+	- Ubicar 4 damas en un tablero de ajedrez de 4x4 ([Boh92], sección 7.1)
+	- Asignación de labores ([Boh92], ejercicio 7.6)
+	- Ejercicios 4.20, 4.21 y 5.26 de [Das08]
+
+Fecha de entrega: 13 de noviembre, 7:00.
