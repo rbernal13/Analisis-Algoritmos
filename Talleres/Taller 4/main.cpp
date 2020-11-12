@@ -135,9 +135,9 @@ void busquedaProfundidad(){
   grafo->anadirArista(*v5,*v2, 40);
   grafo->anadirArista(*v5,*v3, 20);
 
-  list<Vertice> x;
-  x = grafo->DFS(*v2);
-  for (std::list<Vertice>::iterator it=x.begin(); it != x.end(); ++it){
+  list<Vertice> pos;
+  pos = grafo->bProfundidad(*v2);
+  for (std::list<Vertice>::iterator it=pos.begin(); it != pos.end(); ++it){
     cout << ' ' << it->contenido;
   }
 }
@@ -165,7 +165,7 @@ void busquedaAnchura(){
   grafo->anadirArista(*v4,*v4, 50);
 
   map<int, int> pos;
-  pos = grafo->BFS(*v2);
+  pos = grafo->bAncho(*v2);
   for (std::map<int,int>::iterator it=pos.begin(); it!=pos.end(); ++it){
     cout<<it->first<<"   ,   "<<it->second<<endl;
   }
@@ -194,7 +194,7 @@ void algoritmoDijkstra(){
   grafo->anadirArista(*v4,*v4, 50);
 
   map<int, int> pos;
-  pos = grafo->Dijkstras(*v3);
+  pos = grafo->dijkstra(*v3);
   for (std::map<int,int>::iterator it=pos.begin(); it!=pos.end(); ++it){
     cout<<it->first<<"   ,   "<<it->second<<endl;
   }
@@ -229,7 +229,7 @@ void algoritmoBellmanFord(){
   grafo->anadirArista(*v5,*v4, -3); //E-D
   grafo->anadirArista(*v4,*v4, 50);
   
-  map<int, long> pos = grafo->BELLMAN_FORDS(*v1);
+  map<int, long> pos = grafo->bellmanFord(*v1);
   for (std::map<int,long>::iterator it=pos.begin(); it!=pos.end(); ++it){
     cout<<it->first<<"  ,   "<<it->second<<endl;
   }
@@ -294,6 +294,6 @@ void algoritmoPrimm(){
   cout<<"KRUSKAL'S "<<endl;
   cout<<"valor: "<<grafo->kruskals()<<endl;
   cout<<"PRIM'S "<<endl;
-  grafo->Prim();
+  grafo->algthPrim();
 
 }

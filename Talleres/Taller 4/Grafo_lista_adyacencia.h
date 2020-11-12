@@ -7,7 +7,7 @@ class Grafo_Lista_Adyacencia : public Graph{
 public:
     map<Vertice, map<Vertice, long> > listaAdyacencia;
 
-    vector<Vertice> vecinos(Vertice v)
+    vector<Vertice> listaVecinos(Vertice v)
     {
         vector<Vertice> result;
 
@@ -24,16 +24,16 @@ public:
 
     }
 
-    void anadirVertice(Vertice* nuevoVer)
+    void anadirVertice(Vertice* nuevoVert)
     {
         map<Vertice, long> x;
-        nuevoVer->id = listaAdyacencia.size();
-        this->listaAdyacencia.insert( std::pair<Vertice,map<Vertice, long> >(*nuevoVer,x) );
-        vertices.push_back(*nuevoVer);
+        nuevoVert->marca = listaAdyacencia.size();
+        this->listaAdyacencia.insert( std::pair<Vertice,map<Vertice, long> >(*nuevoVert,x) );
+        vertices.push_back(*nuevoVert);
     }
 
-    void anadirArista(Vertice inicio, Vertice final, long distancia){
-        listaAdyacencia[inicio][final] = distancia;
+    void anadirArista(Vertice inicio, Vertice fin, long distancia){
+        listaAdyacencia[inicio][fin] = distancia;
     }
 
 };

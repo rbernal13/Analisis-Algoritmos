@@ -8,10 +8,10 @@ class Grafo_Matriz_Adyacencia: public Graph{
 public:
     vector<vector<long>> matrizAdyacencia;
 
-    vector<Vertice> vecinos(Vertice v){
+    vector<Vertice> listaVecinos(Vertice v){
         vector<Vertice> vec;
         for(int i = 0; i < vertices.size(); i++){
-            if(vertices[i].id != v.id && this->matrizAdyacencia[v.id][i]!=INT_MAX)
+            if(vertices[i].marca != v.marca && this->matrizAdyacencia[v.marca][i]!=INT_MAX)
             {
                 vec.push_back(vertices[i]);
             }
@@ -20,29 +20,29 @@ public:
     }
 
     long costoArista(Vertice v1,Vertice v2){
-        return this->matrizAdyacencia[v1.id][v2.id];
+        return this->matrizAdyacencia[v1.marca][v2.marca];
     }
 
-    void anadirVertice(Vertice* toAdd){
+    void anadirVertice(Vertice* nuevoVert){
       int verticesSize = this->vertices.size();
       bool flag=true;
       if(verticesSize==0){
-            toAdd->id =0;
-      this->vertices.push_back(*toAdd);
+            nuevoVert->marca =0;
+      this->vertices.push_back(*nuevoVert);
       vector<long>x(1,INT_MAX);
        this->matrizAdyacencia.push_back(x);
        return;
       }
-      toAdd->id = verticesSize;
+      nuevoVert->marca = verticesSize;
       for(int i=0;i<verticesSize;i++)
          this->matrizAdyacencia[i].push_back(INT_MAX);
       vector<long>x(verticesSize+1,INT_MAX);
       this->matrizAdyacencia.push_back(x);
-      this->vertices.push_back(*toAdd);
+      this->vertices.push_back(*nuevoVert);
     }
 
-    void anadirArista(Vertice src, Vertice dest, long dist){
-       this->matrizAdyacencia[src.id][dest.id] = dist;
+    void anadirArista(Vertice inico, Vertice fin, long dist){
+       this->matrizAdyacencia[inico.marca][fin.marca] = dist;
     }
 
 };

@@ -7,10 +7,10 @@ class Grafo_Lista_Aristas : public Graph{
 
     map< pair<Vertice,Vertice> , long> l_ar;
     bool equals(Vertice x, Vertice y){
-        return x.id == y.id;
+        return x.marca == y.marca;
     }
 
-    vector<Vertice> vecinos(Vertice v)
+    vector<Vertice> listaVecinos(Vertice v)
     {
         vector<Vertice> result;
         for (std::map<pair<Vertice,Vertice>, long>::iterator it=l_ar.begin(); it!=l_ar.end(); ++it){
@@ -27,13 +27,13 @@ class Grafo_Lista_Aristas : public Graph{
             return INT_MAX;
         return l_ar[x];
     }
-     void anadirVertice(Vertice* toAdd){
-         toAdd->id = this->vertices.size();
-         vertices.push_back(*toAdd);
+     void anadirVertice(Vertice* nuevoVert){
+         nuevoVert->marca = this->vertices.size();
+         vertices.push_back(*nuevoVert);
     }
 
-    void anadirArista(Vertice src, Vertice dest, long dist){
-         l_ar.insert(make_pair( make_pair(src,dest),dist ));
+    void anadirArista(Vertice inicio, Vertice fin, long dist){
+         l_ar.insert(make_pair( make_pair(inicio,fin),dist ));
     }
 
 };

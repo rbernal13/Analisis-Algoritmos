@@ -12,20 +12,21 @@ class Vertice
 {
 public:
     int id;
+    int marca;
     string contenido;
-    bool marca = false;
+    
 
-    bool operator < (const Vertice& R) const
+    bool operator < (const Vertice& vex) const
     {
-        return id< R.id;
+        return marca< vex.marca;
     }
-    bool operator == (const Vertice& R) const
+    bool operator == (const Vertice& vex) const
     {
-        return contenido == R.contenido;
+        return contenido == vex.contenido;
     }
-    Vertice (string val)
+    Vertice (string valr)
     {
-        contenido = val;
+        contenido = valr;
     }
 };
 
@@ -70,10 +71,10 @@ class Graph
 public:
     vector<Vertice>vertices;
     vector<int> pset;
-    virtual vector<Vertice> vecinos(Vertice v) = 0;
+    virtual vector<Vertice> listaVecinos(Vertice v) = 0;
     virtual long costoArista(Vertice v1,Vertice v2)= 0;
-    virtual void anadirVertice(Vertice *toAdd) = 0;
-    virtual void anadirArista(Vertice src, Vertice dest, long dist) =0;
+    virtual void anadirVertice(Vertice *nuevoVert) = 0;
+    virtual void anadirArista(Vertice inicio, Vertice fin, long dist) =0;
 
     vector< pair< long,pair<Vertice,Vertice> > > getAristas()
     {
@@ -94,13 +95,12 @@ public:
         return result;
     }
 
-    list<Vertice>DFS(Vertice v)
-    {
-        list<Vertice>vertex;
-        vector<bool>x(this->vertices.size(),false);
-        vector<Vertice>y = vecinos(v);
-        x[v.id] = true;
-        vertex.push_back(v);
+    list<Vertice>bProfundidad(Vertice v){
+        list<Vertice>verts;
+        vector<bool>arr1(this->vertices.size(),false);
+        vector<Vertice>y = listaVecinos(v);
+        arr1[v.marca] = true;
+        verts.push_back(v);
         stack<Vertice>pileta;
         for(Vertice ver:y)
             pileta.push(ver);
@@ -108,39 +108,39 @@ public:
         {
             Vertice aux = pileta.top();
             pileta.pop();
-            if(x[aux.id]==false)
+            if(arr1[aux.marca]==false)
             {
-                x[aux.id]= true;
-                vertex.push_back(aux);
-                vector<Vertice>y = vecinos(aux);
+                arr1[aux.marca]= true;
+                verts.push_back(aux);
+                vector<Vertice>y = listaVecinos(aux);
                 for(Vertice ver:y)
                     pileta.push(ver);
             }
         }
-        return vertex;
+        return verts;
     }
 
-    map<int, int> BFS(Vertice v)
+    map<int, int> bAncho(Vertice v)
     {
         queue<Vertice> cola;
         map<int, int> mapa;
         cola.push(v);
         for(int i=0; i<vertices.size(); i++)
-            mapa[vertices[i].id] = INT_MAX;
-        mapa[v.id] = 0;
+            mapa[vertices[i].marca] = INT_MAX;
+        mapa[v.marca] = 0;
         cout<<"anterior: "<<mapa.size()<<endl;
         system("PAUSE");
         while (!cola.empty())
         {
             Vertice aux = cola.front();
             cola.pop();
-            vector<Vertice>y = vecinos(aux);
+            vector<Vertice>y = listaVecinos(aux);
             for(Vertice ver:y)
             {
-                if (mapa[ver.id] == INT_MAX)
+                if (mapa[ver.marca] == INT_MAX)
                 {
                     cout<<"si entra"<<endl;
-                    mapa[ver.id] = mapa[aux.id] + 1;
+                    mapa[ver.marca] = mapa[aux.marca] + 1;
                     cola.push(ver);
                 }
             }
@@ -148,12 +148,12 @@ public:
         return mapa;
     }
 
-    map<int,int> Dijkstras(Vertice v)
+    map<int,int> dijkstra(Vertice v)
     {
         map<int, int> mapa;
         for(int i=0; i<vertices.size(); i++)
-            mapa[vertices[i].id] = INT_MAX;
-        mapa[v.id] = 0;
+            mapa[vertices[i].marca] = INT_MAX;
+        mapa[v.marca] = 0;
         priority_queue <pair<int,Vertice>, vector< pair<int,Vertice> >, comparar > cola;
         cola.push(make_pair(0,v));
         while(!cola.empty())
@@ -162,16 +162,16 @@ public:
             cola.pop();
             int distancia = top.first;
             Vertice ver = top.second;
-            if(distancia == mapa[ver.id])
+            if(distancia == mapa[ver.marca])
             {
-                vector<Vertice>y = vecinos(ver);
+                vector<Vertice>y = listaVecinos(ver);
                 for (Vertice x : y)
                 {
                     int costo = costoArista(ver,x);
-                    if(mapa[ver.id]+costo < mapa[x.id])
+                    if(mapa[ver.marca]+costo < mapa[x.marca])
                     {
-                        mapa[x.id] = mapa[ver.id]+costo;
-                        cola.push(make_pair(mapa[x.id],x));
+                        mapa[x.marca] = mapa[ver.marca]+costo;
+                        cola.push(make_pair(mapa[x.marca],x));
                     }
                 }
             }
@@ -179,15 +179,15 @@ public:
         return mapa;
     }
 
-    map<int, long> BELLMAN_FORDS(Vertice v)
+    map<int,long> bellmanFord(Vertice v)
     {
         map< int, long > mapa;
         int sizes = vertices.size();
         for(int i=0; i<sizes; i++)
         {
-            mapa[vertices[i].id] = INT_MAX;
+            mapa[vertices[i].marca] = INT_MAX;
         }
-        mapa[v.id] = 0;
+        mapa[v.marca] = 0;
 
         vector< pair< long,pair<Vertice,Vertice> > > aristas  = getAristas();
         for(int i=0; i<sizes-1; i++)
@@ -197,9 +197,9 @@ public:
                 Vertice src = aristas[j].second.first;
                 Vertice dest = aristas[j].second.second;
                 long peso = aristas[j].first;
-                long x = mapa[dest.id];
-                long y = mapa[src.id] + peso;
-                mapa[dest.id] = min(x,y);
+                long x = mapa[dest.marca];
+                long y = mapa[src.marca] + peso;
+                mapa[dest.marca] = min(x,y);
             }
         }
 
@@ -209,42 +209,24 @@ public:
             Vertice src = aristas[j].second.first;
             Vertice dest = aristas[j].second.second;
             long peso = aristas[j].first;
-            long x = mapa[dest.id];
-            long y = mapa[src.id] + peso;
+            long x = mapa[dest.marca];
+            long y = mapa[src.marca] + peso;
             if(y < x)
             {
-                cout<<"Hay ciclo negativo"<<endl;
+                cout<<"-1, ciclo negativo"<<endl;
                 return mapa;
             }
         }
         return mapa;
     }
 
-    void initSet(int _size)
-    {
-        pset.resize(_size);
-        REP (i, 0, _size - 1) pset[i] = i;
-    }
-    int findSet(int i)
-    {
-        return (pset[i] == i) ? i : (pset[i] = findSet(pset[i]));
-    }
-    void unionSet(int i, int j)
-    {
-        pset[findSet(i)] = findSet(j);
-    }
-    bool isSameSet(int i, int j)
-    {
-        return findSet(i) == findSet(j);
-    }
-
     long kruskals()
     {
         long mst_cost = 0;
-        vector< pair< long,pair<Vertice,Vertice> > >x = getAristas();
+        vector< pair< long,pair<Vertice,Vertice> > >listAristas = getAristas();
         priority_queue< pair<long, pair<int,int> > >EdgeList;
-        for(int i=0; i<x.size(); i++)
-            EdgeList.push(  make_pair(    -(x[i].first),make_pair(  x[i].second.first.id,x[i].second.second.id)     )    );
+        for(int i=0; i<listAristas.size(); i++)
+            EdgeList.push(  make_pair(    -(listAristas[i].first),make_pair(  listAristas[i].second.first.marca,listAristas[i].second.second.marca)     )    );
         initSet(this->vertices.size());
         while (!EdgeList.empty())
         {
@@ -260,76 +242,76 @@ public:
         return mst_cost;
     }
 
-    long Minimos(vector<bool>aux,vector<long>NodoCosto)
+    long vert_minimo(vector<bool>aux, vector<long>costoVert)
     {
         int indice = 0,mini = INT_MAX;
         for (int j = 0; j <vertices.size(); j++)
         {
-            if (aux[j] == false && NodoCosto[j] <= mini)
+            if (aux[j] == false && costoVert[j] <= mini)
             {
-                mini = NodoCosto[j], indice = j;
+                mini = costoVert[j], indice = j;
             }
         }
         return indice;
     }
 
-    void Prim()
+    void algthPrim()
     {
-        vector<int>NodoAntecesor(vertices.size(),-1);
-        vector<long>NodoCosto(vertices.size(),INT_MAX);
+        vector<int> vertAnterior(vertices.size(),-1);
+        vector<long>costoVert(vertices.size(),INT_MAX);
         vector<bool>aux(vertices.size(),false);
-        NodoCosto[0] = 0;
-        NodoAntecesor[0] = -1;
+        costoVert[0] = 0;
+        vertAnterior[0] = -1;
         for(int i=0; i<vertices.size(); i++)
         {
-            long indice = Minimos(aux,NodoCosto);
+            long indice = vert_minimo(aux,costoVert);
             aux[indice] = true;
 
             for(int j =0 ; j<vertices.size(); j++)
             {
-                if(j != indice && aux[j] == false && costoArista(vertices[indice],vertices[j]) < NodoCosto[j])
+                if(j != indice && aux[j] == false && costoArista(vertices[indice],vertices[j]) < costoVert[j])
                 {
-                    NodoAntecesor[j] = indice;
-                    NodoCosto[j] = costoArista(vertices[indice],vertices[j]);
+                    vertAnterior[j] = indice;
+                    costoVert[j] = costoArista(vertices[indice],vertices[j]);
                 }
             }
 
         }
 
         for (int i = 1; i < vertices.size(); i++)
-            cout<<NodoAntecesor[i]<<" - "<<i<<" con un Costo de: "<<costoArista(vertices[i],vertices[NodoAntecesor[i]])<<" \n";
+            cout<<vertAnterior[i]<<" - "<<i<<", costo: "<<costoArista(vertices[i],vertices[vertAnterior[i]])<<" \n";
     }
 
 
 
-    void jugar(int fila,vector<int>&col,list< vector<int> > &resultado)
+    void jugar(int fila,vector<int>&column,list< vector<int> > &resul)
     {
         if(fila == 8)
         {
-            resultado.push_back(col);
+            resul.push_back(column);
         }
         else
         {
             for(int i=0; i<8; i++)
             {
-                col.push_back(i);
-                if(Validar(col))
+                column.push_back(i);
+                if(validarRes(column))
                 {
-                    jugar(fila+1,col,resultado);
+                    jugar(fila+1,column,resul);
                 }
-                col.pop_back();
+                column.pop_back();
             }
         }
     }
 
 
 
-    bool Validar(vector<int>&col)
+    bool validarRes(vector<int>&column)
     {
-        int fila = col.size()-1;
+        int fila = column.size()-1;
         for(int i = 0; i<fila; i++)
         {
-            int diferencia = abs(col[i] - col[fila]);
+            int diferencia = abs(column[i] - column[fila]);
             if(diferencia == 0 || diferencia == (fila - i))
             {
                 return false;
@@ -340,10 +322,10 @@ public:
 
     list< vector<int> > reina()
     {
-        list< vector<int> > resultado;
+        list< vector<int> > res;
         vector<int>y;
-        jugar(0,y,resultado);
-        return resultado;
+        jugar(0,y,res);
+        return res;
     }
 
 
@@ -392,14 +374,14 @@ public:
 
         while(!cola.empty())
         {
-            cout<<"entro"<<endl;
+            cout<<"entra"<<endl;
             pair<Vertice,Vertice> l = cola.top();
             int d;
             int c;
-            stringstream geek(l.first.contenido);
-            geek>>c;
-            stringstream geek2(l.second.contenido);
-            geek2>>d;
+            stringstream cont1(l.first.contenido);
+            cont1>>c;
+            stringstream cont2(l.second.contenido);
+            cont2>>d;
             this->anadirArista(l.first,l.second,c*d);
             cola.pop();
         }
@@ -410,6 +392,24 @@ public:
             cout<<"Longitud: "<<asignacion[i].first<<endl;
         }
         cout<<"costo min: "<<minimo<<endl;
+    }
+
+    void initSet(int _size)
+    {
+        pset.resize(_size);
+        REP (i, 0, _size - 1) pset[i] = i;
+    }
+    int findSet(int i)
+    {
+        return (pset[i] == i) ? i : (pset[i] = findSet(pset[i]));
+    }
+    void unionSet(int i, int j)
+    {
+        pset[findSet(i)] = findSet(j);
+    }
+    bool isSameSet(int i, int j)
+    {
+        return findSet(i) == findSet(j);
     }
 
 };
