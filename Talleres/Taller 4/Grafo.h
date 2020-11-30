@@ -70,7 +70,7 @@ class Graph
 
 public:
     vector<Vertice>vertices;
-    vector<int> pset;
+    vector<int> lstSet;
     virtual vector<Vertice> listaVecinos(Vertice v) = 0;
     virtual long costoArista(Vertice v1,Vertice v2)= 0;
     virtual void anadirVertice(Vertice *nuevoVert) = 0;
@@ -396,16 +396,16 @@ public:
 
     void initSet(int _size)
     {
-        pset.resize(_size);
-        REP (i, 0, _size - 1) pset[i] = i;
+        lstSet.resize(_size);
+        REP (i, 0, _size - 1) lstSet[i] = i;
     }
     int findSet(int i)
     {
-        return (pset[i] == i) ? i : (pset[i] = findSet(pset[i]));
+        return (lstSet[i] == i) ? i : (lstSet[i] = findSet(lstSet[i]));
     }
     void unionSet(int i, int j)
     {
-        pset[findSet(i)] = findSet(j);
+        lstSet[findSet(i)] = findSet(j);
     }
     bool isSameSet(int i, int j)
     {
@@ -416,5 +416,9 @@ public:
 
 
 #endif // GRAFO_H_INCLUDED
+
+/*
+*  
+*/
 
 

@@ -16,7 +16,7 @@ public:
                 vec.push_back(vertices[i]);
             }
         }
-    return vec;
+        return vec;
     }
 
     long costoArista(Vertice v1,Vertice v2){
@@ -41,8 +41,8 @@ public:
       this->vertices.push_back(*nuevoVert);
     }
 
-    void anadirArista(Vertice inico, Vertice fin, long dist){
-       this->matrizAdyacencia[inico.marca][fin.marca] = dist;
+    void anadirArista(Vertice inico, Vertice fin, long distancia){
+       this->matrizAdyacencia[inico.marca][fin.marca] = distancia;
     }
 
 };

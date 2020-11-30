@@ -5,15 +5,15 @@
 using namespace std;
 class Grafo_Lista_Aristas : public Graph{
 
-    map< pair<Vertice,Vertice> , long> l_ar;
-    bool equals(Vertice x, Vertice y){
-        return x.marca == y.marca;
+    map< pair<Vertice,Vertice> , long> listaAristas;
+    bool equals(Vertice v1, Vertice v2){
+        return v1.marca == v2.marca;
     }
 
     vector<Vertice> listaVecinos(Vertice v)
     {
         vector<Vertice> result;
-        for (std::map<pair<Vertice,Vertice>, long>::iterator it=l_ar.begin(); it!=l_ar.end(); ++it){
+        for (std::map<pair<Vertice,Vertice>, long>::iterator it=listaAristas.begin(); it!=listaAristas.end(); ++it){
             if(equals(it->first.first, v)){
                 result.push_back(it->first.second);
             }
@@ -22,18 +22,18 @@ class Grafo_Lista_Aristas : public Graph{
     }
 
     long costoArista(Vertice v1,Vertice v2 ){
-        pair<Vertice,Vertice>x(v1,v2);
-        if(l_ar.find(x) == l_ar.end())
+        pair<Vertice,Vertice>arist(v1,v2);
+        if(listaAristas.find(arist) == listaAristas.end())
             return INT_MAX;
-        return l_ar[x];
+        return listaAristas[arist];
     }
      void anadirVertice(Vertice* nuevoVert){
          nuevoVert->marca = this->vertices.size();
          vertices.push_back(*nuevoVert);
     }
 
-    void anadirArista(Vertice inicio, Vertice fin, long dist){
-         l_ar.insert(make_pair( make_pair(inicio,fin),dist ));
+    void anadirArista(Vertice inicio, Vertice fin, long distancia){
+         listaAristas.insert(make_pair( make_pair(inicio,fin),distancia ));
     }
 
 };

@@ -26,9 +26,9 @@ public:
 
     void anadirVertice(Vertice* nuevoVert)
     {
-        map<Vertice, long> x;
+        map<Vertice, long> vert;
         nuevoVert->marca = listaAdyacencia.size();
-        this->listaAdyacencia.insert( std::pair<Vertice,map<Vertice, long> >(*nuevoVert,x) );
+        this->listaAdyacencia.insert( std::pair<Vertice,map<Vertice, long> >(*nuevoVert,vert) );
         vertices.push_back(*nuevoVert);
     }
 
